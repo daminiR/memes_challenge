@@ -20,3 +20,7 @@ train_path = data_dir / "train.jsonl"
 dev_path = data_dir / "dev.jsonl"
 test_path = data_dir / "test.jsonl"
 
+train_samples_frame = pd.read_json(train_path, lines=True)
+train_samples_frame.head()
+
+
