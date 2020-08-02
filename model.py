@@ -1,12 +1,23 @@
-mport pytorch_lightning as pl
-
-
+import pytorch_lightning as pl
+import json
+import logging
+from pathlib import Path
+from lav import LanguageAndVisionConcat
+import random
+import tarfile
+import tempfile
+import warnings
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import pandas_path  # Path style access for pandas
+from tqdm import tqdm
+import torch
+import torchvision
+import fasttext
+from dataset import HatefulMemesDataset
 # for the purposes of this post, we'll filter
 # much of the lovely logging info from our LightningModule
-warnings.filterwarnings("ignore")
-logging.getLogger().setLevel(logging.WARNING)
-
-
 class HatefulMemesModel(pl.LightningModule):
     def __init__(self, hparams):
         for data_key in ["train_path", "dev_path", "img_dir",]:
@@ -239,7 +250,7 @@ class HatefulMemesModel(pl.LightningModule):
         trainer_params = {
             "checkpoint_callback": checkpoint_callback,
             "early_stop_callback": early_stop_callback,
-            "default_save_path": self.output_path,
+            "default_root_dir": self.output_path,
             "accumulate_grad_batches": self.hparams.get(
                 "accumulate_grad_batches", 1
             ),
